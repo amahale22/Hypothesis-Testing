@@ -1,0 +1,87 @@
+---
+title: "OneSampleTest"
+author: "Akshay91"
+date: "2 August 2018"
+output: html_document
+---
+
+```{r Import and subset data}
+drugData<-read.csv("VAS DATA.csv")
+
+drugData
+
+drugDataA<-subset(drugData,drugData$Group=="A")
+drugDataA
+
+drugDataB<-subset(drugData,drugData$Group=="B")
+drugDataB
+
+```
+
+
+
+```{r Is post treatment VAS score is less than before treament(GROUP A)}
+
+#Ho:VAS before test= VAS after test
+#H1: VAS after test<VAS score before test
+#Use one sample paired test (1 sample 2 conditions)
+
+#Since it is a single sample with pre and post scenarios on ample samples.
+#We go for Pairwise t test
+
+t.test(drugDataA$VAS_before,drugDataA$VAS_after,alternative = "greater",paired = T)
+
+#P-value<0.05 (LOS) .Hence we reject Null Hypothesis.
+
+```
+
+
+
+
+```{r Is post treatment VAS score is less than before treament(GROUP B)}
+#Ho:VAS before test= VAS after test
+#H1: VAS after test<VAS score before test
+#Use one sample paired test (1 sample 2 conditions)
+
+#Since it is a single sample with pre and post scenarios on ample samples.
+#We go for Pairwise t test
+
+t.test(drugDataB$VAS_before,drugDataB$VAS_after,alternative = "greater",paired = T)
+
+#P-Value is less than 0.05 (LOS) Hence we reject Null hypothesis
+
+```
+
+
+
+
+
+```{r Is the average change in pain level for group A significantly more than group B}
+#Ho:VAS after test (A)= VAS after test (B)
+#H1: VAS after test (B)<VAS score after test (A)
+#Use one sample paired test (1 sample 2 conditions)
+
+#Since we have to compare 2 samples and there is single factor with only 2 levels,
+#we apply t test for 2 independent samples
+
+t.test(VAS_after~Group,data=drugData,alternative="greater",var.equal=T)
+
+#P-value is >0.0 (LOS) Hence we accpet Null hypothesis
+
+```
+
+```{r Boxplot to show change in pain level on both groups}
+library(ggplot2)
+ggplot(data=drugData,aes(x=Group,y=VAS_after))+
+  geom_boxplot()
+
+```
+
+
+
+
+
+
+
+
+
